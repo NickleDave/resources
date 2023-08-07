@@ -3,7 +3,7 @@ from math import inf
 from functools import reduce
 from typing import List
 
-from helpers import (
+from .helpers import (
     are_segments_overlapping, mass_to_sgm, segment_jaccard, seg_to_set, set_intersect_ratio
 )
 
