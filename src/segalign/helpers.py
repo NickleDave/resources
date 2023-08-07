@@ -1,19 +1,23 @@
 from typing import Tuple, List
 #This file contains multiple helper functions to convert between segmentation formats and calculate frequently needed info
 
-#returns the directed intersect ratio from a to b
-def setIntersectRatio(a,b):
-    return len(a&b)/len(a)
+
+def set_intersect_ratio(a,b):
+    """Returns the directed intersect ratio from a to b"""
+    return len(a & b) / len(a)
+
 
 #returns the length of a segment of the form [start,end]
 def segLen(seg1: Tuple[int,int]):
     [i,j] = seg1
     return j-i + 1
 
-#generates the set of integers in [start,end]
-def segToSet(seg1: Tuple[int,int]):
-    [firstElem, lastElem] = seg1
-    return set(x for x in range(firstElem,lastElem+1))
+
+def seg_to_set(seg1: Tuple[int,int]):
+    """Convert a segment :math:`s_i`, represented by its start and stop indices :math:`(s_j, s_k)`,
+    to a Python ``set`` of the integers :math:`{j, j+1, j+2, ..., k}`"""
+    return set(range(seg1[0], seg1[1] + 1))
+
 
 def massToBinStr(massList):
     str = ''
@@ -23,12 +27,6 @@ def massToBinStr(massList):
         str += '0'*(segSize-1)+'1'*(1 if segSize>=1 else 0)
     return str[:-1]
 
-def massLen(massList: List[int]):
-    from functools import reduce
-
-    n = reduce(lambda a,b: a+b, massList)
-
-    return n
 
 def segDist(seg1: Tuple[int,int] ,seg2: Tuple[int,int],normFactor=1):
     [i,j] = seg1
@@ -37,13 +35,15 @@ def segDist(seg1: Tuple[int,int] ,seg2: Tuple[int,int],normFactor=1):
     return (abs(k-i) + abs (l-j), (abs(k-i) + abs (l-j))/normFactor)
 
 
-def segOverlap(seg1: Tuple[int,int] ,seg2: Tuple[int,int]):
+def are_segments_overlapping(seg1: Tuple[int,int] ,seg2: Tuple[int,int]):
+    """Returns True if two segments `seg1` and `seg2` overlap.
+
+    Both segments are represented as tuples (start, stop)
+    """
     if seg1 is None or seg2 is None:
         return False
-    [i,j] = seg1
-    [k,l] = seg2
+    return not (seg1[1] < seg2[0] or seg2[1] < seg1[0])
 
-    return not (j<k or l<i)
 
 def isSoftTransp(gSgmChunk: Tuple[Tuple[int,int],Tuple[int,int]], hSgmChunk: Tuple[Tuple[int,int],Tuple[int,int]]):
     g1 = gSgmChunk[0]
@@ -57,46 +57,49 @@ def isSoftTransp(gSgmChunk: Tuple[Tuple[int,int],Tuple[int,int]], hSgmChunk: Tup
 
     return j1 and j2
 
-def segmentJaccard(seg1: Tuple[int,int] ,seg2: Tuple[int,int]):
-    [i, j]  = seg1
-    [k, l]  = seg2
+def segment_jaccard(seg1: Tuple[int,int] ,seg2: Tuple[int,int]):
+    """Compute jaccard index for two segments, ``seg1`` and ``seg2``"""
+    i, j  = seg1
+    k, l  = seg2
 
     #no overlap
-    if j<k or l<i:
+    if j < k or l < i:
         return 0
 
-    #r1 is subset of r2
-    if k<=i and j<=l:
-        unionSize = l-k+1
-        intersectSize = unionSize - (i-k) - (l-j)
+    # r1 is subset of r2
+    if k <= i and j <= l:
+        union_size = l - k + 1
+        intersect_size = union_size - (i - k) - (l - j)
 
-    #r2 is subset of r1
-    if i<=k and l<=j:
-        unionSize = j-i+1
-        intersectSize = unionSize - (k-i) - (j-l)
+    # r2 is subset of r1
+    if i <= k and l <= j:
+        union_size = j - i + 1
+        intersect_size = union_size - (k - i) - (j - l)
     
-    #r1, then r2 with intersect
-    if i<k and k<=j and j<l:
-        unionSize = l-i+1
-        intersectSize = j-k+1 
+    # r1, then r2 with intersect
+    if i < k and k <= j and j < l:
+        union_size = l - i + 1
+        intersect_size = j - k + 1
 
-    #r2, then r1 with intersect
+    # r2, then r1 with intersect
     if k<i and i<=l and l<j:
-        unionSize = j-k+1
-        intersectSize = l-i+1
-    
-    return intersectSize/unionSize
+        union_size = j-k+1
+        intersect_size = l-i+1
+
+    return intersect_size / union_size
+
 
 def setJaccard(set1, set2):
 
     return (len(set1&set2))/(len(set1|set2)) 
 
 
-def massToSgm(massList: List[int]):
+def mass_to_sgm(mass_list: List[int]):
+    """Convert a list of segment masses to a list of (start, stop) pairs"""
     total = 0
     seg = []
-    for size in massList:
-        seg.append((total,total+size-1))
+    for size in mass_list:
+        seg.append((total, total + size - 1))
         total += size
     return seg
 
