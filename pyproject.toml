@@ -1,0 +1,13 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "segalign"
+authors = [{name = "Gerardo Diaz", email = "godiaz@utdallas.edu"}]
+readme = "README.md"
+version = "0.1"
+description = "An alignment-based similarity metric for text segmentation"
+
+[project.urls]
+Home = "https://github.com/sierra98x/resources"
