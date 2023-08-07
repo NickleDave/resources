@@ -1,3 +1,19 @@
-# Readme 
+# An Alignment Based Approach to Text Segmentation
 
-Hi! I've set up this repo to share data, code, and other resources related to my papers. If you run into any issues or have questions/comments, feel free to contact me at godiaz@utdallas.edu.
+This repository implements the alignment index $A$ as proposed in:
+Diaz, Gerardo Ocampo, and Jessica Ouyang. 
+"An Alignment-based Approach to Text Segmentation Similarity Scoring." 
+Proceedings of the 26th Conference on Computational Natural Language Learning (CoNLL). 2022.
+<https://aclanthology.org/2022.conll-1.26/>
+<https://aclanthology.org/2022.conll-1.26.pdf>
+
+To cite:
+```
+@inproceedings{diaz2022alignment,
+  title={An Alignment-based Approach to Text Segmentation Similarity Scoring},
+  author={Diaz, Gerardo Ocampo and Ouyang, Jessica},
+  booktitle={Proceedings of the 26th Conference on Computational Natural Language Learning (CoNLL)},
+  pages={374--383},
+  year={2022}
+}
+```
